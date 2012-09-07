@@ -188,9 +188,16 @@ def main():
 
     def _log(node, indent=''):
         if len(node) == 0:
-            owners = ', '.join(node.attributes['asset']['ownerNames'])
+            asset = node.attributes['asset']
+            owners = ', '.join(asset['ownerNames'])
             if (filter_re and filter_re.search(owners)) or not filter_re:
-                print '%s- "%s" (%s)' % (indent, node.attributes['name'], owners)
+
+                if asset.get('explicitlyTrashed', False):
+                    trashed = ' - TRASHED'
+                else:
+                    trashed = ''
+
+                print '%s- "%s" (%s)%s' % (indent, node.attributes['name'], owners, trashed)
         else:
             print '%s-+ %s' % (indent, node.attributes['name'])
             if len(indent) > 0 and indent[-1] == '\\':
