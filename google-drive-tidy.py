@@ -3,7 +3,7 @@ import os
 
 from json import load as json_load, dump as json_dump
 from httplib2 import Http
-from logging import debug, info, warning, error, basicConfig as logging_config
+from logging import info, warning, basicConfig as logging_config
 from argparse import ArgumentParser
 from re import compile as re_compile
 
@@ -69,8 +69,8 @@ def generate_all_files(output=OUTPUT, client_secrets=CLIENT_SECRETS, credentials
                 'all_files': retrieve_all_files(service),
                 'about': service.about().get().execute()
             }
-        except errors.HttpError, error:
-            error('An error occurred: %s' % error)
+        except errors.HttpError, e:
+            error('An error occurred: %s' % e)
             response = None
         else:
             with open(output, 'w') as f:
@@ -149,7 +149,7 @@ def process():
             parents_string = ', '.join([ids_to_titles[p['id']] for p in parents])
             warning('document "%s" with %i parents: %s' % (r.get('title'), len(parents), parents_string))
 
-        for i, r in enumerate(parent_1):
+        for r in parent_1:
             title = r.get('title')
             node = ids_to_folders.get(r.get('id'), Node(name=title, asset=r))
 
