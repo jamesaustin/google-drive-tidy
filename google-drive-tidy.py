@@ -7,7 +7,7 @@ from logging import debug, info, warning, error, basicConfig as logging_config
 from argparse import ArgumentParser
 from re import compile as re_compile
 
-from oauth2client.tools import run
+from oauth2client.tools import run_flow
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
 
@@ -58,7 +58,7 @@ def generate_all_files(output=OUTPUT, client_secrets=CLIENT_SECRETS, credentials
         credentials = storage.get()
         if not credentials:
             flow = flow_from_clientsecrets(client_secrets, scope='https://www.googleapis.com/auth/drive')
-            credentials = run(flow, storage)
+            credentials = run_flow(flow, storage)
 
         http = Http()
         http = credentials.authorize(http)
